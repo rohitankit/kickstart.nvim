@@ -69,13 +69,24 @@ return {
       -- Setting up autocomplete with copilot
       require("CopilotChat.integrations.cmp").setup()
 
+      local function is_visual_mode()
+        local mode = vim.fn.mode()
+        return mode == 'v' or mode == 'V' or mode == ''
+      end
+
+
       -- Different copilot commands/keybinds
-      --  Copilot chat with buffer as context
+      --  create chat with visual selection as context if in visual mode
+      --  else create chat with buffer as context
       vim.api.nvim_create_user_command("CopilotChatBuffer", function(args)
         if args.args == "" then
           return
         end
-        chat.ask(args.args, { selection = select.buffer })
+        if is_visual_mode() then
+          chat.ask(args.args, { selection = select.visual })
+        else
+          chat.ask(args.args, { selection = select.buffer })
+        end
       end, { nargs = "*", range = true })
 
       --  Turns CopilotChat buffer

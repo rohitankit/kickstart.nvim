@@ -13,10 +13,23 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- Creates new Buffer for help pages instead of a split
+
+-- Creates new Buffer for help pages in the current window
+--  instead of a in a horizontal split
+local split_pages = { "copilot-chat" }
+
 vim.api.nvim_create_autocmd("BufEnter", {
   group = vim.api.nvim_create_augroup("HelpReplaceWindow", { clear = true }),
   callback = function()
+    -- Some markdown files that should be split instead of
+    --  opening in a new window
+    local buf_filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':t')
+    for _, file_to_split in ipairs(split_pages) do
+      if string.find(buf_filename, file_to_split, 0, true) then
+        return
+      end
+    end
+
     if (vim.bo.filetype == "help" or vim.bo.filetype == "markdown") and vim.b.already_opened == nil then
       -- remember we already opened this buffer
       vim.b.already_opened = true

@@ -12,7 +12,7 @@ require('lazy').setup {
     notify = false,
   },
   install = {
-    colorscheme = { 'tokyonight-night' },
+    -- colorscheme = { 'tokyonight-night' },
   },
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
