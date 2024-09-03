@@ -1,0 +1,45 @@
+-- Custom bookmarks
+return {
+  {}
+  -- {
+  --   'tomasky/bookmarks.nvim',
+  --   dependencies = {
+  --     'nvim-telescope/telescope.nvim',
+  --     'folke/which-key.nvim',
+  --     "RutaTang/quicknote.nvim",
+  --   },
+  --   config = function()
+  --     local bookmarks = require('bookmarks')
+  --     bookmarks.setup({
+  --       sign_priority = 8, --set bookmark sign priority to cover git signs
+  --       keywords = {
+  --         ['@t'] = '☑️ ', -- mark annotation startswith @t ,signs this icon as `Todo`
+  --         ['@w'] = '⚠️ ', -- mark annotation startswith @w ,signs this icon as `Warn`
+  --         ['@f'] = '⛏ ', -- mark annotation startswith @f ,signs this icon as `Fix`
+  --         ['@n'] = ' ', -- mark annotation startswith @n ,signs this icon as `Note`
+  --       },
+  --     })
+  --     require('telescope').load_extension('bookmarks')
+  --
+  --     local map = function(keys, func, desc)
+  --       vim.keymap.set('n', keys, func, { desc = 'Bookmarks: ' .. desc })
+  --     end
+  --
+  --     map('<space>mm',
+  --       function()
+  --         require("bookmarks").bookmark_toggle()
+  --         require('quicknote').NewNoteAtCurrentLine()
+  --       end, 'Toggle Bookmark')
+  --     map('<space>ma',
+  --       function()
+  --         require("bookmarks").bookmark_ann()
+  --         require('quicknote').NewNoteAtCurrentLine()
+  --       end, 'Add or Edit Bookmark Annotation')
+  --     map('<space>mc', function() require("bookmarks").bookmark_clean() end, 'Clean Bookmarks in Local Buffer')
+  --     map('<space>mCA', function() require("bookmarks").bookmark_clear_all() end, 'Clean all Bookmarks')
+  --     map('<space>mn', function() require("bookmarks").bookmark_next() end, 'Next Bookmark')
+  --     map('<space>mp', function() require("bookmarks").bookmark_prev() end, 'Previous Bookmark')
+  --     map('<space>ml', "<cmd>Telescope bookmarks list<cr> require('quicknote').OpenNoteAtCurrentLine()", "Bookmarks")
+  --   end,
+  -- }
+}
