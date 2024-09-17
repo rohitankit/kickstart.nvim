@@ -8,7 +8,7 @@ return {
     dependencies = {
       { "nvim-telescope/telescope.nvim" },
       { "stevearc/dressing.nvim" },
-      { "RutaTang/quicknote.nvim" },
+      { "winter-again/annotate.nvim" },
     },
     opts = {
       json_db_path = "/home/ir/dev/misc/neovim-notes/bookmarks.db.json",
@@ -38,38 +38,45 @@ return {
       hooks = {
         {
           callback = function(_, _)
-            require('quicknote').OpenNoteAtCurrentLine()
+            if not require('bookmarks').api.find_existing_bookmark_under_cursor() then
+              require('annotate').create_annotation()
+              require('bookmarks').api.calibrate_current_window()
+            end
           end,
+          trigger_point = "AFTER_GOTO_BOOKMARK",
+        },
+        {
+          callback = function(_, _)
+            require('annotate').create_annotation()
+          end,
+          trigger_point = "AFTER_CREATE_BOOKMARK",
         },
       },
     },
     config = function(_, opts)
       local bookmarks = require("bookmarks")
-      local quicknote = require('quicknote')
       bookmarks.setup(opts)
 
-      vim.keymap.set({ "n", "v" }, "<leader>fm", "<cmd>BookmarksGoto<cr>",
+      vim.keymap.set({ "n", "v" }, "<leader>fm", "<cmd>BookmarksGoto<CR>",
         { desc = "Go to bookmark at current active BookmarkList" })
-      vim.keymap.set({ "n", "v" }, "<leader>ma", "<cmd>BookmarksCommands<cr>",
+      vim.keymap.set({ "n", "v" }, "<leader>bk", "<cmd>BookmarksCommands<CR>",
         { desc = "Find and trigger a bookmark command." })
 
-      local map = function(keys, func, desc)
-        vim.keymap.set({ "n", "v" }, keys, func, { desc = 'Bookmarks: ' .. desc })
+      local map = function(l, r, desc)
+        vim.keymap.set({ "n", "v" }, l, r, { desc = 'Book[M]arks: ' .. desc })
       end
 
-      map('<leader>mm',
-        function()
-          -- local line_no = vim.api.nvim_win_get_cursor(0)[1]
-          -- quicknote.NewNoteAtLine(line_no)
-          -- quicknote.OpenNoteAtLine(line_no)
-          -- quicknote.NewNoteAtCurrentLine()
-          vim.cmd("BookmarksMark")
-        end, 'Toggle Bookmark')
+      map('ma',
+        '<Cmd>BookmarksCommands<CR>',
+        'list [A]ctions')
 
-      map('<leader>mt',
-        function()
-          vim.cmd("BookmarksTree")
-        end, 'Toggle Tree')
-    end
-  }
+      map('mm',
+        '<Cmd>BookmarksMark<CR>',
+        'Toggle [M]ark')
+
+      map('mt',
+        '<Cmd>BookmarksTree<CR>',
+        'Toggle [T]ree')
+    end,
+  },
 }

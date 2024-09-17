@@ -125,6 +125,7 @@ return {
       {
         "<leader>ga",
         ":lua require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions({selection = require('CopilotChat.select').visual}))<CR>",
+        mode = "v",
         desc = "CopilotChat - Prompt actions",
       },
       -- Quick chat with Copilot
@@ -136,6 +137,17 @@ return {
             vim.cmd("CopilotChatBuffer " .. input)
           end
         end,
+        desc = "CopilotChat - Quick chat",
+      },
+      {
+        "<leader>gc",
+        function()
+          local input = vim.fn.input("Quick Chat: ")
+          if input ~= "" then
+            vim.cmd("CopilotChatBuffer " .. input)
+          end
+        end,
+        mode = "v",
         desc = "CopilotChat - Quick chat",
       },
       { "<leader>gt", "<cmd>CopilotChatToggle<cr>", desc = "CopilotChat - Toggle" },
