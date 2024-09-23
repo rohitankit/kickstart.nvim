@@ -1,6 +1,4 @@
 require 'config.keymaps'
 require 'config.options'
-require 'config.lazy_init'
-require 'config.basic-autocmd'
-
-vim.cmd('source ~/.vimrc')
+require 'config.lazy_setup'
+require 'config.autocmds'
