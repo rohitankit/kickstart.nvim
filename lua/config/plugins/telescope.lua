@@ -23,6 +23,9 @@ return {
       {
         'nvim-telescope/telescope-live-grep-args.nvim',
       },
+      {
+        'nvim-telescope/telescope-hop.nvim'
+      },
     },
     config = function()
       local telescope = require("telescope")
@@ -45,8 +48,12 @@ return {
       local default_mappings = {
         mappings = {
           i = {
-            ["<C-c>"] = false
-          }
+            ["<C-c>"] = false,
+            ["<C-down>"] = R("telescope").extensions.hop.hop,
+          },
+          n = {
+            ["<C-down>"] = R("telescope").extensions.hop.hop,
+          },
         }
       }
       local default_layout_conf = {
@@ -76,6 +83,7 @@ return {
         pickers = {
           find_files = {
             hidden = true,
+            layout_config = fullscreen_layout_conf.layout_config,
           },
           live_grep = { "--hidden" },
           buffers = {
@@ -103,19 +111,22 @@ return {
             auto_quoting = true,
             mappings = {
               i = {
-                ["<C-f>"] = live_grep_actions.quote_prompt({postfix = " -w"}),
+                ["<C-f>"] = live_grep_actions.quote_prompt({ postfix = " -w"}),
                 ["<C-u>"] = live_grep_actions.quote_prompt({ postfix = " --iglob **/*.{h,cpp}" }),
                 ["<C-i>"] = live_grep_actions.quote_prompt({ postfix = "--iglob **/*.{h,cpp}" }),
                 ["<C-o>"] = live_grep_actions.quote_prompt({ postfix = " --iglob **/*.{py}" }),
               }
             }
           }),
+          hop = {
+            trace_entry = true,
+            sign_hl = { "WarningMsg", "Title" },
+            line_hl = { "CursorLine", "Normal" },
+          },
         },
       }
 
       local builtin = require 'telescope.builtin'
-
-      vim.cmd "autocmd User TelescopePreviewerLoaded setlocal number"
 
       -- Enable Telescope extensions if they are installed
       pcall(telescope.load_extension, 'fzf')
@@ -139,16 +150,16 @@ return {
 
       vim.keymap.set('n', '<leader>fg', ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>",
         { desc = '[F]ind by [g]rep' })
-      vim.keymap.set('n', '<leader>fw', live_grep_args_shortcuts.grep_word_under_cursor,
+      vim.keymap.set('n', '<leader>fw', live_grep_args_shortcuts.grep_word_under_cursor_current_buffer,
+        { desc = '[f]ind current [w]ord' })
+      vim.keymap.set('n', '<leader>fW', live_grep_args_shortcuts.grep_word_under_cursor,
         { desc = '[F]ind current [W]ord' })
-      vim.keymap.set('n', '<leader>fv', live_grep_args_shortcuts.grep_visual_selection,
-        { desc = '[F]ind by [G]rep' })
+      vim.keymap.set({"v", "n"}, '<leader>fv', live_grep_args_shortcuts.grep_word_visual_selection_current_buffer,
+        { desc = '[f]ind by [v]isual_selection' })
+      vim.keymap.set('v', '<leader>fV', live_grep_args_shortcuts.grep_visual_selection,
+        { desc = '[f]ind by [v]isual_selection' })
 
-      _G.custom_find_files = function()
-        builtin.find_files(vim.tbl_extend('error', telescope_config, fullscreen_layout_conf))
-      end
-      vim.keymap.set('n', '<leader>ff', ':lua custom_find_files()<CR>', { desc = '[F]ind [F]iles' })
-
+      vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = '[F]ind [F]iles' })
     end,
   },
 }

@@ -41,7 +41,7 @@ return {
           end,
           { desc = '[G]it [S]tage Hunk' }
         )
-        map('v', '<leader>gr', function()
+        map('v', '<leader>gre', function()
             gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
           end,
           { desc = '[G]it [R]eset Hunk' }
@@ -50,7 +50,7 @@ return {
 
         -- Actions with Buffer
         map('n', '<leader>gs', gitsigns.stage_buffer, { desc = '[G]it [S]tage Buffer' })
-        map('n', '<leader>gr', gitsigns.reset_buffer, { desc = '[G]it [R]eset Buffer' })
+        map('n', '<leader>gre', gitsigns.reset_buffer, { desc = '[G]it [R]eset Buffer' })
         map('n', '<leader>gb', function()
             gitsigns.blame_line { full = true }
           end,

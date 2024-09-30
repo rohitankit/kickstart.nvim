@@ -60,11 +60,64 @@ return {
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-          map('gt', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+          local fullscreen_telescope_config = {
+            prompt_prefix = "   ",
+            selection_caret = "  ",
+            sorting_strategy = "ascending",
+            layout_strategy = "horizontal",
+            layout_config = {
+              horizontal = {
+                mirror = false,
+                prompt_position = 'top',
+                width = 0.95,
+                height = 0.95,
+                preview_cutoff = 10,
+                preview_width = 0.60,
+              }
+            },
+            border = true,
+            color_devicons = true,
+            borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
+            file_ignore_patterns = {
+              "^%.git/",
+              "^%.git$",
+              ".DS_Store",
+            },
+            mappings = {
+              i = {
+                ["<C-c>"] = false
+              }
+            }
+          }
+          _G.custom_telescope_config = function(telescope_fn)
+            telescope_fn(fullscreen_telescope_config)
+          end
+
+          map('gd',
+              function()
+                custom_telescope_config(require('telescope.builtin').lsp_definitions)
+              end,
+              '[G]oto [D]efinition')
+          map('gD',
+              function()
+                custom_telescope_config(vim.lsp.buf.declaration)
+              end,
+              '[G]oto [D]eclaration')
+          map('gr',
+              function()
+                custom_telescope_config(require('telescope.builtin').lsp_references)
+              end,
+              '[G]oto [R]eferences')
+          map('gI',
+              function()
+                custom_telescope_config(require('telescope.builtin').lsp_implementations)
+              end,
+              '[G]oto [I]mplementation')
+          map('gt',
+              function()
+                custom_telescope_config(require('telescope.builtin').lsp_type_definitions)
+              end,
+              'Type [D]efinition')
           map('gR', vim.lsp.buf.rename, '[R]e[n]ame')
           map('gk', vim.lsp.buf.hover, 'Hover Documentation')
 

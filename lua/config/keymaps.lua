@@ -31,14 +31,15 @@ vim.keymap.set('n', '<C-up>', '<C-w><C-k>', { desc = 'Move focus to the upper wi
 -- Keymaps to use osc-52 to copy to system clipboard
 vim.keymap.set('n', 'y', '"+y')
 vim.keymap.set('v', 'y', '"+y')
-
--- Other useful keymaps
+-- Other copy-keymaps
 vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
-
 vim.keymap.set("x", "<leader>p", [["_dP]])
-
 vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
+
+-- Editing remaps
+-- vim.api.nvim_set_keymap('i', 'S', 'setline(".",substitute(getline(line(".")),"^\s*",matchstr(getline(line(".")-1),"^\s*"),""))', { noremap = true })
+
 
 --[=========================== Buffer Keymaps =============================]
 -- Command to move buffer to next tab

@@ -1,4 +1,18 @@
 return {
+  {
+    'nvim-lua/plenary.nvim',
+    config = function()
+      if pcall(require, "plenary") then
+        RELOAD = require("plenary.reload").reload_module
+
+        R = function(name)
+          RELOAD(name)
+          return require(name)
+        end
+      end
+    end
+  },
+
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
@@ -54,4 +68,6 @@ return {
       end
     end,
   },
+
+
 }

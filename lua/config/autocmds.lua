@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 --  instead of a in a horizontal split
 
 -- Exception file types
-local split_pages = { "copilot-chat" }
+local split_pages = { "copilot-chat", "ticket_note"}
 
 vim.api.nvim_create_autocmd("BufEnter", {
   group = vim.api.nvim_create_augroup("HelpReplaceWindow", { clear = true }),
