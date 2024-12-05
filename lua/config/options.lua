@@ -1,4 +1,8 @@
 --[============== Setting Neovim/Vim global variables =================]
+-- Set <space> as the leader key
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
 vim.g.have_nerd_font = true
 
 -- disable default netrw file explorer
@@ -22,7 +26,6 @@ vim.g.clipboard = {
 -- You can also add relative line numbers, to help with jumping.
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.wo.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -32,6 +35,15 @@ vim.opt.showmode = false
 
 -- Enable break indent
 vim.opt.breakindent = true
+
+-- Sets no of spaces for each indentation
+vim.opt.shiftwidth = 4
+
+-- Insert the appropriate number of spaces when pressing the Tab key
+vim.opt.smarttab = true
+
+-- Convert tabs to spaces
+vim.opt.expandtab = true
 
 -- Save undo history
 vim.opt.undofile = true
@@ -65,7 +77,7 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 999
 
 -- Add colors to neovim
 vim.opt.termguicolors = true

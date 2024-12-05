@@ -103,44 +103,36 @@ return {
           end
         end,
       })
-
-      ---- Add which-key mappings
-      local wk = require("which-key")
-      wk.add({
-        { "<leader>g",  group = "+Copilot Chat" }, -- group
-        { "<leader>gp", desc = "Quick chat" },
-        { "<leader>ga", desc = "Show Copilot prompt_actions" },
-        { "<leader>gt", desc = "Quick Chat toggle" },
-      })
     end,
+
     keys = {
       {
-        "<leader>ga",
+        "<leader>aa",
         function()
           local actions = require("CopilotChat.actions")
           require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
         end,
-        desc = "CopilotChat - Prompt actions",
+        desc = "[a]ctions prompt ",
       },
       {
-        "<leader>ga",
+        "<leader>aa",
         ":lua require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions({selection = require('CopilotChat.select').visual}))<CR>",
         mode = "v",
-        desc = "CopilotChat - Prompt actions",
+        desc = "[a]ctions prompt",
       },
       -- Quick chat with Copilot
       {
-        "<leader>gc",
+        "<leader>ac",
         function()
           local input = vim.fn.input("Quick Chat: ")
           if input ~= "" then
             vim.cmd("CopilotChatBuffer " .. input)
           end
         end,
-        desc = "CopilotChat - Quick chat",
+        desc = "[c]hat",
       },
       {
-        "<leader>gc",
+        "<leader>ac",
         function()
           local input = vim.fn.input("Quick Chat: ")
           if input ~= "" then
@@ -148,9 +140,9 @@ return {
           end
         end,
         mode = "v",
-        desc = "CopilotChat - Quick chat",
+        desc = "[c]hat",
       },
-      { "<leader>gt", "<cmd>CopilotChatToggle<cr>", desc = "CopilotChat - Toggle" },
+      { "<leader>at", "<cmd>CopilotChatToggle<cr>", desc = "[T]oggle chat window" },
     },
   },
 }

@@ -1,28 +1,39 @@
 return {
   -- plugins to see the hierarchical view of symbols from lsp in buffer
   {
-    "SmiteshP/nvim-navbuddy",
-    name = 'navbuddy',
+    'stevearc/aerial.nvim',
     dependencies = {
-      "SmiteshP/nvim-navic",
-      "MunifTanjim/nui.nvim"
+       "nvim-treesitter/nvim-treesitter",
+       "nvim-tree/nvim-web-devicons"
     },
     opts = {
-      lsp = { auto_attach = true },
+      backends = {"lsp"},
+      lsp = {
+        diagnostics_trigger_update = true,
+        update_when_errors = false,
+      },
+      on_attach = function(bufnr)
+        vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+        vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+        vim.keymap.set("n", "ga", "<cmd>AerialToggle!<CR>", { desc = 'toggle [a]erial' })
+      end,
+      extensions = {
+        aerial = {
+          format_symbol = function(symbol_path, filetype)
+            if filetype == "json" or filetype == "yaml" then
+              return table.concat(symbol_path, ".")
+            else
+              return symbol_path[#symbol_path]
+            end
+          end,
+          show_columns = "both",
+        },
+      },
     },
     config = function(_, opts)
-      local actions = require("nvim-navbuddy.actions")
-      local navbuddy = require("nvim-navbuddy")
-
-      navbuddy.setup(vim.tbl_deep_extend("force", {
-        mappings = {
-          ["<C-left>"] = actions.parent(),    -- Move to left panel
-          ["<C-right>"] = actions.children(), -- Move to right panel
-        }
-      }, opts))
-
-      vim.keymap.set('n', '<leader>o', '<cmd>:lua require("nvim-navbuddy").open() <CR>',
-        { noremap = true, silent = true, desc = 'go to symb[O]l' })
+      require('aerial').setup(opts)
+      require("telescope").load_extension("aerial")
+      vim.keymap.set("n", "<leader>ta", "<cmd>Telescope aerial<CR>", { desc = '[a]erial picker' })
     end
   },
   {

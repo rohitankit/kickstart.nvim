@@ -1,54 +1,133 @@
+function ToggleNoiceHistory()
+  if check_filetype("noice") then
+    close_window_with_filetype("noice")
+  else
+    vim.cmd("NoiceHistory")
+  end
+end
+
 return {
+  -- Themes
+  {
+    'folke/tokyonight.nvim',
+    init = function()
+      vim.cmd.hi 'Comment gui=none'
+    end,
+  },
+
+  {
+    "scottmckendry/cyberdream.nvim",
+    lazy = false,
+    priority = 1000,
+    init = function()
+      vim.cmd.colorscheme 'cyberdream'
+      -- vim.cmd.hi 'Comment gui=none'
+    end,
+    opts = {
+      extensions = {
+        telescope = true
+      },
+    },
+    keys = {
+      { "<leader>a", "", desc = "ai" },
+      { "<leader>b", "", desc = "buffer" },
+      { "<leader>t", "", desc = "telescope/toggle" },
+      { "<leader>f", "", desc = "find"},
+      { "<leader>g", "", desc = "git" },
+      { "<leader>q", "", desc = "quickfix/quit" },
+      { "<leader>n", "", desc = "note" },
+      { "<leader>l", "", desc = "location list" },
+    },
+  },
+
+  -- trouble
+  {
+    "folke/trouble.nvim",
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = "Trouble",
+    keys = {
+      {
+        "<leader>e",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Buffer Diagnostic [e]rrors (Trouble)",
+      },
+      {
+        "<leader>E",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostic [E]rrors (Trouble)",
+      },
+      {
+        "gs",
+        "<cmd>Trouble symbols toggle focus=false win.position=right<cr>",
+        desc = "[s]ymbols (Trouble)",
+      },
+      {
+        "gl",
+        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+        desc = "[l]sp (Trouble)",
+      },
+      {
+        "<leader>l",
+        "<cmd>Trouble loclist toggle<cr>",
+        desc = "[l]ocation List (Trouble)",
+      },
+      {
+        "<leader>qf",
+        "<cmd>Trouble qflist toggle<cr>",
+        desc = "Quick [f]ix List (Trouble)",
+      },
+    },
+  },
+
+  -- noice
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    opts = {
-      lsp = {
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
-        },
-      },
-      routes = {
-        {
-          filter = {
-            event = "msg_show",
-            any = {
-              { find = "%d+L, %d+B" },
-              { find = "; after #%d+" },
-              { find = "; before #%d+" },
+    opts = function(_, opts)
+      opts.presets = {
+        command_palette = {
+          views = {
+            cmdline_popup = {
+              position = {
+                row = "50%",
+                col = "50%",
+              },
+              size = {
+                min_width = 60,
+                width = "auto",
+                height = "auto",
+              },
+            },
+            popupmenu = {
+              relative = "editor",
+              position = {
+                row = 23,
+                col = "50%",
+              },
+              size = {
+                width = 60,
+                height = "auto",
+                max_height = 15,
+              },
+              border = {
+                style = "rounded",
+                padding = { 0, 1 },
+              },
+              win_options = {
+                winhighlight = { Normal = "Normal", FloatBorder = "NoiceCmdlinePopupBorder" },
+              },
             },
           },
-          view = "mini",
         },
-      },
-      presets = {
-        bottom_search = true,
-        command_palette = true,
-        long_message_to_split = true,
-      },
-    },
-    -- stylua: ignore
-    keys = {
-      { "<leader>sn", "", desc = "+noice"},
-      { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
-      { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-      { "<leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
-      { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
-      { "<leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
-      { "<leader>snt", function() require("noice").cmd("pick") end, desc = "Noice Picker (Telescope/FzfLua)" },
-      -- { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll Forward", mode = {"i", "n", "s"} },
-      -- { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll Backward", mode = {"i", "n", "s"}},
-    },
-    config = function(_, opts)
-      -- HACK: noice shows messages from before it was enabled,
-      -- but this is not ideal when Lazy is installing plugins,
-      -- so clear the messages in this case.
-      if vim.o.filetype == "lazy" then
-        vim.cmd([[messages clear]])
-      end
-      require("noice").setup(opts)
+      }
+      -- opts.lsp.signature = {
+      --   opts = { size = { max_height = 15 } },
+      -- }
     end,
-  }
+    keys = {
+      { "<leader>tn", ToggleNoiceHistory, desc = "Toggle [n]oice history" },
+    },
+  },
+
+
 }

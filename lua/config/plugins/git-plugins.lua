@@ -19,49 +19,39 @@ return {
           vim.keymap.set(mode, l, r, opts)
         end
 
-        -- Navigation
-        map('n', '<leader>+', function()
+        map('n', '<leader>gp', gitsigns.preview_hunk, { desc = '[p]review Hunk' })
+        map('n', '<leader>gs', gitsigns.stage_hunk, { desc = '[s]tage Hunk' })
+        map('n', '<leader>gu', gitsigns.reset_hunk, { desc = '[u] Reset Hunk' })
+        map('n', '<leader>g+', function()
           if vim.wo.diff then
             vim.cmd.normal { ']c', bang = true }
           else
             gitsigns.nav_hunk 'next'
           end
-        end)
-        map('n', '<leader>-', function()
+        end,
+        { desc = "[+]next git hunk" })
+
+        map('n', '<leader>g-', function()
           if vim.wo.diff then
             vim.cmd.normal { '[c', bang = true }
           else
             gitsigns.nav_hunk 'prev'
           end
-        end)
+        end,
+        { desc = "[-]prev git hunk" })
 
-        -- Actions with Hunk
-        map('v', '<leader>gs', function()
-            gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
-          end,
-          { desc = '[G]it [S]tage Hunk' }
-        )
-        map('v', '<leader>gre', function()
-            gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
-          end,
-          { desc = '[G]it [R]eset Hunk' }
-        )
-        map('n', '<leader>gp', gitsigns.preview_hunk, { desc = '[G]it [P]review Hunk' })
-
-        -- Actions with Buffer
-        map('n', '<leader>gs', gitsigns.stage_buffer, { desc = '[G]it [S]tage Buffer' })
-        map('n', '<leader>gre', gitsigns.reset_buffer, { desc = '[G]it [R]eset Buffer' })
         map('n', '<leader>gb', function()
             gitsigns.blame_line { full = true }
           end,
-          { desc = '[G]it [B]lame' }
+          { desc = '[b]lame' }
         )
-        map('n', '<leader>gt', gitsigns.toggle_current_line_blame, { desc = '[G]it [T]oggle Blame' })
-        map('n', '<leader>gd', gitsigns.diffthis, { desc = '[G]it [d]iff' })
+        map('n', '<leader>gt', gitsigns.toggle_current_line_blame, { desc = '[t]oggle Blame' })
+
+        map('n', '<leader>gd', gitsigns.diffthis, { desc = '[d]iff' })
         map('n', '<leader>gD', function()
             gitsigns.diffthis '~'
           end,
-          { desc = '[G]it [D]iff' }
+          { desc = '[D]iff' }
         )
       end,
     },

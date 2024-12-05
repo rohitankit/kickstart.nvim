@@ -9,7 +9,7 @@ return {
       });
 
       vim.keymap.set("n", "<leader>n", global_note.toggle_note, {
-        desc = "Toggle global note",
+        desc = "Open global [n]ote file",
       })
     end
   },
