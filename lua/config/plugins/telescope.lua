@@ -34,6 +34,7 @@ return {
 
       local telescope_config = {
         prompt_prefix = "   ",
+        path_display = { "truncate" },
         selection_caret = "  ",
         sorting_strategy = "ascending",
         layout_strategy = "horizontal",
@@ -50,10 +51,10 @@ return {
         mappings = {
           i = {
             ["<C-c>"] = false,
-            ["<C-down>"] = R("telescope").extensions.hop.hop,
+            ["<C-left>"] = R("telescope").extensions.hop.hop,
           },
           n = {
-            ["<C-down>"] = R("telescope").extensions.hop.hop,
+            ["<C-left>"] = R("telescope").extensions.hop.hop,
           },
         }
       }
@@ -116,8 +117,12 @@ return {
                 ["<C-u>"] = live_grep_actions.quote_prompt({ postfix = " --iglob **/*.{h,cpp}" }),
                 ["<C-i>"] = live_grep_actions.quote_prompt({ postfix = " --iglob **/*.{h,cpp}" }),
                 ["<C-o>"] = live_grep_actions.quote_prompt({ postfix = " --iglob **/*.{py}" }),
-                ["<S-Down>"] = actions.cycle_history_next,
-                ["<S-Up>"] = actions.cycle_history_prev,
+                ["<C-down>"] = actions.cycle_history_next,
+                ["<C-up>"] = actions.cycle_history_prev,
+              },
+              n = {
+                ["<C-down>"] = actions.cycle_history_next,
+                ["<C-up>"] = actions.cycle_history_prev,
               }
             }
           }),
@@ -156,6 +161,8 @@ return {
       vim.keymap.set('n', '<leader>fM', builtin.man_pages, { desc = '[M]an pages' })
       vim.keymap.set('n', '<leader>f"', builtin.registers, { desc = 'registers' })
       vim.keymap.set('n', '<leader>fs', builtin.lsp_document_symbols, { desc = '[s]ymbols' })
+
+      vim.keymap.set('v', '<leader>fg', '<esc>/\\%V')
 
       pcall(telescope.load_extension, 'live_grep_args')
       local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")

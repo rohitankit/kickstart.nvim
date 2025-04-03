@@ -2,7 +2,7 @@
 vim.api.nvim_set_keymap('n', '<C-b>', ':NvimTreeToggle<cr>', { silent = true, noremap = true })
 
 -- Toggle telescope file browser
-vim.keymap.set('n', '<space>fB', ':Telescope file_browser<CR>', { silent = true, noremap = true })
+vim.keymap.set('n', '<space>fB', ':Telescope file_browser<CR>', { silent = true, noremap = true, desc = '[B]rowse file tree' })
 
 return {
   -- nvim-tree, tree navigation like vscode
