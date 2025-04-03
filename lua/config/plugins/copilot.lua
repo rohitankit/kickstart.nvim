@@ -34,7 +34,6 @@ return {
       debug = true,
       allow_insecure = false,
       auto_follow_cursor = false,
-      context = 'buffer',
       prompts = prompts,
       mappings = {
         -- Use tab for completion
@@ -63,7 +62,6 @@ return {
       -- Setting up plugin
       local chat = require("CopilotChat")
       local select = require("CopilotChat.select")
-      opts.selection = select.unnamed
       chat.setup(opts)
 
       -- Setting up autocomplete with copilot
@@ -83,9 +81,15 @@ return {
           return
         end
         if is_visual_mode() then
-          chat.ask(args.args, { selection = select.visual })
+          print(select.visual)
+          print(args.args)
+          chat.ask(args.args, {
+            { selection = select.visual },
+          })
         else
-          chat.ask(args.args, { selection = select.buffer })
+          chat.ask(args.args, {
+            { selection = select.buffer },
+          })
         end
       end, { nargs = "*", range = true })
 
