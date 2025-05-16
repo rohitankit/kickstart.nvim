@@ -34,6 +34,7 @@ return {
 
       local telescope_config = {
         prompt_prefix = "   ",
+        path_display = { "truncate" },
         selection_caret = "  ",
         sorting_strategy = "ascending",
         layout_strategy = "horizontal",
